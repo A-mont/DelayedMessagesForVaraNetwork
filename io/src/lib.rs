@@ -9,7 +9,7 @@ pub type TransactionId = u64;
 
 
 
-#[derive(Encode, Decode, TypeInfo, Hash, PartialEq, PartialOrd, Eq, Ord, Clone, Copy, Debug)]
+#[derive(Encode, Decode, TypeInfo)]
 pub enum Action {
     FTDelayedMessage_0s(u128),
     FTDelayedMessage_10s(u128),

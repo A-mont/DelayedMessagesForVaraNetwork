@@ -1,4 +1,4 @@
-# Async Communication
+# Delayed Messages
 
 
 ## Directorio IO
@@ -16,12 +16,17 @@ use gmeta::{In, InOut, Metadata};
 ### PASO 1 Definir las acciones.
 **comando:**
 ```rust
-#[derive(Encode, Decode, TypeInfo, Hash, PartialEq, PartialOrd, Eq, Ord, Clone, Copy, Debug)]
+#[derive(Encode, Decode, TypeInfo)]
 pub enum Action {
-    FTCreate(u128),
-    FTDestroy(u128),
-    FTTransfer(u128)
+    FTDelayedMessage_0s(u128),
+    FTDelayedMessage_10s(u128),
+    FTDelayedMessage_20s(u128),
+    FTDelayedMessage_30s(u128),
+    FTDelayedMessage_1m(u128),
+    FTDelayedMessage_3m(u128),
+    FTDelayedMessage_5m(u128),   
 }
+
 ```
 
 ### PASO 2 Agregamos las acciones del Token Fungible
@@ -138,57 +143,93 @@ struct Actors {
 
 impl Actors {
 
-    async fn destructor( &mut self, amount_tokens: u128){
-
+    async fn delayed_message_0s( &mut self, amount_tokens: u128){
+       
         let currentstate = state_mut();
-
-        let address_ft = addresft_state_mut();
-
-        let payload = FTAction::Burn(amount_tokens);
-     
-        let result =  msg::send_for_reply_as::<_, FTEvent>(address_ft.ft_program_id,payload,0,0).expect("Error in sending a message").await;
-        
-        currentstate.entry(msg::source()).or_insert(amount_tokens); 
-
-        let _ = match result {
-            Ok(event) => match event {
-                FTEvent::Ok => Ok(()),
-                _ => Err(()),
-            },
-            Err(_) => Err(()),
-        };
-    }
-
-    async fn creator(&mut self, amount_tokens: u128){
-
-        let currentstate = state_mut();
-        let address_ft = addresft_state_mut();           
-        let payload = FTAction::Mint(amount_tokens);     
-        let result =  msg::send_for_reply_as::<_, FTEvent>(address_ft.ft_program_id,payload,0,0).expect("Error in sending a message").await;
+        let address_ft = addresft_state_mut(); 
+        let payload = FTAction::Mint(amount_tokens);
+        let delay = 0;     
+        let delete_message =msg::send_delayed(address_ft.ft_program_id, payload, 0, delay);     
         currentstate.entry(msg::source()).or_insert(amount_tokens);  
 
-        let _ = match result {
-            Ok(event) => match event {
-                FTEvent::Ok => Ok(()),
-                _ => Err(()),
-            },
-            Err(_) => Err(()),
-        };
     }
 
-    async fn transfer(&mut self, amount_tokens: u128) {
- 
+
+    async fn delayed_message_10s( &mut self, amount_tokens: u128){
+       
         let currentstate = state_mut();
-        let address_ft = addresft_state_mut();           
-        let payload = FTAction::Transfer{from: exec::program_id(), to: msg::source() ,amount: amount_tokens};
-        let _ = msg::send(address_ft.ft_program_id, payload, 0);
+        let address_ft = addresft_state_mut(); 
+        let payload = FTAction::Mint(amount_tokens);
+        let delay = 3;     
+        let delete_message =msg::send_delayed(address_ft.ft_program_id, payload, 0, delay);
+        
+        currentstate.entry(msg::source()).or_insert(amount_tokens);  
+
+    }
+
+    async fn delayed_message_20s( &mut self, amount_tokens: u128){
+       
+        let currentstate = state_mut();
+        let address_ft = addresft_state_mut(); 
+        let payload = FTAction::Mint(amount_tokens);
+        let delay = 6;     
+        let delete_message =msg::send_delayed(address_ft.ft_program_id, payload, 0, delay);
+        currentstate.entry(msg::source()).or_insert(amount_tokens);  
+
+        
+    }
+
+    async fn delayed_message_30s( &mut self, amount_tokens: u128){
+       
+        let currentstate = state_mut();
+        let address_ft = addresft_state_mut(); 
+        let payload = FTAction::Mint(amount_tokens);
+        let delay = 10;     
+        let delete_message =msg::send_delayed(address_ft.ft_program_id, payload, 0, delay);
+        
+        currentstate.entry(msg::source()).or_insert(amount_tokens);  
+
+        
+    }
+
+
+    async fn delayed_message_1m( &mut self, amount_tokens: u128){
+       
+        let currentstate = state_mut();
+        let address_ft = addresft_state_mut(); 
+        let payload = FTAction::Mint(amount_tokens);
+        let delay = 20;     
+        let delete_message =msg::send_delayed(address_ft.ft_program_id, payload, 0, delay);
+        
         currentstate.entry(msg::source()).or_insert(amount_tokens);  
        
-
-
     }
 
-   
+    async fn delayed_message_3m( &mut self, amount_tokens: u128){
+       
+        let currentstate = state_mut();
+        let address_ft = addresft_state_mut(); 
+        let payload = FTAction::Mint(amount_tokens);
+        let delay = 60;     
+        let delete_message =msg::send_delayed(address_ft.ft_program_id, payload, 0, delay);
+        
+        currentstate.entry(msg::source()).or_insert(amount_tokens);  
+
+        
+    }
+
+    async fn delayed_message_5m( &mut self, amount_tokens: u128){
+       
+        let currentstate = state_mut();
+        let address_ft = addresft_state_mut(); 
+        let payload = FTAction::Mint(amount_tokens);
+        let delay = 100;     
+        let delete_message =msg::send_delayed(address_ft.ft_program_id, payload, 0, delay);
+        
+        currentstate.entry(msg::source()).or_insert(amount_tokens);  
+
+        
+    }
 }
 ```
 
@@ -277,26 +318,37 @@ async fn main(){
     let actors = unsafe { ACTORS.get_or_insert(Actors::default()) };
 
     match action {
-        Action::FTCreate(amount) =>  {
+
+        Action::FTDelayedMessage_0s(amount) =>  {
          
-
-                actors.creator(amount).await;
+            actors.delayed_message_0s(amount).await;   
+        },
+        Action::FTDelayedMessage_10s(amount) =>  {
+        
+                actors.delayed_message_10s(amount).await;
                
- 
             },
-        Action::FTDestroy(amount) => {
+        Action::FTDelayedMessage_20s(amount) => {
 
-                
-                actors.destructor(amount).await;
-                     
-            }
+                actors.delayed_message_20s(amount).await;             
+            },
 
-        Action::FTTransfer(amount) => {
+        Action::FTDelayedMessage_30s(amount) => {
      
-                actors.transfer(amount).await;
-                
-             
-            }
+                actors.delayed_message_30s(amount).await;
+            },
+        Action::FTDelayedMessage_1m(amount) => {
+     
+                actors.delayed_message_1m(amount).await;
+            },
+        Action::FTDelayedMessage_3m(amount) => {
+     
+                actors.delayed_message_3m(amount).await;
+            },
+        Action::FTDelayedMessage_5m(amount) => {
+     
+                actors.delayed_message_5m(amount).await;
+            },
            
             };
 
@@ -332,8 +384,6 @@ pub mod metafns {
     pub fn get_state(state: State) -> Vec<(ActorId, u128)> {
         state
     }
-
-
 
 }
 
