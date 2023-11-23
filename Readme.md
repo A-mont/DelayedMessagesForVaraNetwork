@@ -346,17 +346,7 @@ async fn main(){
      
                 actors.delayed_message_5m(amount).await;
             },
-
-        Action::FTAllDelayedMessages(amount) => {
     
-                actors.delayed_message_0s(amount).await; 
-                actors.delayed_message_10s(amount).await;
-                actors.delayed_message_30s(amount).await;
-                actors.delayed_message_1m(amount).await; 
-                actors.delayed_message_3m(amount).await;         
-                actors.delayed_message_5m(amount).await; 
-            },
-           
             };
 
 }
