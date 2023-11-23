@@ -227,8 +227,7 @@ impl Actors {
         let delete_message =msg::send_delayed(address_ft.ft_program_id, payload, 0, delay);
         
         currentstate.entry(msg::source()).or_insert(amount_tokens);  
-
-        
+    
     }
 }
 ```
@@ -325,14 +324,12 @@ async fn main(){
         },
         Action::FTDelayedMessage_10s(amount) =>  {
         
-                actors.delayed_message_10s(amount).await;
-               
-            },
+            actors.delayed_message_10s(amount).await;    
+        },
         Action::FTDelayedMessage_20s(amount) => {
 
                 actors.delayed_message_20s(amount).await;             
-            },
-
+        },
         Action::FTDelayedMessage_30s(amount) => {
      
                 actors.delayed_message_30s(amount).await;
@@ -348,6 +345,16 @@ async fn main(){
         Action::FTDelayedMessage_5m(amount) => {
      
                 actors.delayed_message_5m(amount).await;
+            },
+
+        Action::FTAllDelayedMessages(amount) => {
+    
+                actors.delayed_message_0s(amount).await; 
+                actors.delayed_message_10s(amount).await;
+                actors.delayed_message_30s(amount).await;
+                actors.delayed_message_1m(amount).await; 
+                actors.delayed_message_3m(amount).await;         
+                actors.delayed_message_5m(amount).await; 
             },
            
             };

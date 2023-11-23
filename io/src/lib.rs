@@ -11,13 +11,14 @@ pub type TransactionId = u64;
 
 #[derive(Encode, Decode, TypeInfo)]
 pub enum Action {
-    FTDelayedMessage_0s(u128),
-    FTDelayedMessage_10s(u128),
-    FTDelayedMessage_20s(u128),
-    FTDelayedMessage_30s(u128),
-    FTDelayedMessage_1m(u128),
-    FTDelayedMessage_3m(u128),
-    FTDelayedMessage_5m(u128),   
+    FTDelayedMessage0s(u128),
+    FTDelayedMessage10s(u128),
+    FTDelayedMessage20s(u128),
+    FTDelayedMessage30s(u128),
+    FTDelayedMessage1m(u128),
+    FTDelayedMessage3m(u128),
+    FTDelayedMessage5m(u128),
+    FTAllDelayedMessages(u128)   
 }
 
 

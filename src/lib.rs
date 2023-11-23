@@ -3,7 +3,7 @@
 use gmeta::Metadata;
 use hashbrown::HashMap;
 use io::*;
-use gstd::{async_main, msg, exec, prelude::*, ActorId};
+use gstd::{async_main, msg, prelude::*, ActorId};
 
 
 
@@ -25,7 +25,7 @@ impl Actors {
         let address_ft = addresft_state_mut(); 
         let payload = FTAction::Mint(amount_tokens);
         let delay = 0;     
-        let delete_message =msg::send_delayed(address_ft.ft_program_id, payload, 0, delay);     
+        let _delete_message =msg::send_delayed(address_ft.ft_program_id, payload, 0, delay);     
         currentstate.entry(msg::source()).or_insert(amount_tokens);  
 
     }
@@ -37,7 +37,7 @@ impl Actors {
         let address_ft = addresft_state_mut(); 
         let payload = FTAction::Mint(amount_tokens);
         let delay = 3;     
-        let delete_message =msg::send_delayed(address_ft.ft_program_id, payload, 0, delay);
+        let _delete_message =msg::send_delayed(address_ft.ft_program_id, payload, 0, delay);
         
         currentstate.entry(msg::source()).or_insert(amount_tokens);  
 
@@ -49,7 +49,7 @@ impl Actors {
         let address_ft = addresft_state_mut(); 
         let payload = FTAction::Mint(amount_tokens);
         let delay = 6;     
-        let delete_message =msg::send_delayed(address_ft.ft_program_id, payload, 0, delay);
+        let _delete_message =msg::send_delayed(address_ft.ft_program_id, payload, 0, delay);
         currentstate.entry(msg::source()).or_insert(amount_tokens);  
 
         
@@ -61,7 +61,7 @@ impl Actors {
         let address_ft = addresft_state_mut(); 
         let payload = FTAction::Mint(amount_tokens);
         let delay = 10;     
-        let delete_message =msg::send_delayed(address_ft.ft_program_id, payload, 0, delay);
+        let _delete_message =msg::send_delayed(address_ft.ft_program_id, payload, 0, delay);
         
         currentstate.entry(msg::source()).or_insert(amount_tokens);  
 
@@ -75,7 +75,7 @@ impl Actors {
         let address_ft = addresft_state_mut(); 
         let payload = FTAction::Mint(amount_tokens);
         let delay = 20;     
-        let delete_message =msg::send_delayed(address_ft.ft_program_id, payload, 0, delay);
+        let _delete_message =msg::send_delayed(address_ft.ft_program_id, payload, 0, delay);
         
         currentstate.entry(msg::source()).or_insert(amount_tokens);  
 
@@ -88,7 +88,7 @@ impl Actors {
         let address_ft = addresft_state_mut(); 
         let payload = FTAction::Mint(amount_tokens);
         let delay = 60;     
-        let delete_message =msg::send_delayed(address_ft.ft_program_id, payload, 0, delay);
+        let _delete_message =msg::send_delayed(address_ft.ft_program_id, payload, 0, delay);
         
         currentstate.entry(msg::source()).or_insert(amount_tokens);  
 
@@ -102,7 +102,7 @@ impl Actors {
         let address_ft = addresft_state_mut(); 
         let payload = FTAction::Mint(amount_tokens);
         let delay = 100;     
-        let delete_message =msg::send_delayed(address_ft.ft_program_id, payload, 0, delay);
+        let _delete_message =msg::send_delayed(address_ft.ft_program_id, payload, 0, delay);
         
         currentstate.entry(msg::source()).or_insert(amount_tokens);  
 
@@ -189,35 +189,45 @@ async fn main(){
     match action {
 
 
-        Action::FTDelayedMessage_0s(amount) =>  {
+        Action::FTDelayedMessage0s(amount) =>  {
          
             actors.delayed_message_0s(amount).await;   
         },
-        Action::FTDelayedMessage_10s(amount) =>  {
+        Action::FTDelayedMessage10s(amount) =>  {
         
                 actors.delayed_message_10s(amount).await;
                
             },
-        Action::FTDelayedMessage_20s(amount) => {
+        Action::FTDelayedMessage20s(amount) => {
 
                 actors.delayed_message_20s(amount).await;             
             },
 
-        Action::FTDelayedMessage_30s(amount) => {
+        Action::FTDelayedMessage30s(amount) => {
      
                 actors.delayed_message_30s(amount).await;
             },
-        Action::FTDelayedMessage_1m(amount) => {
+        Action::FTDelayedMessage1m(amount) => {
      
                 actors.delayed_message_1m(amount).await;
             },
-            Action::FTDelayedMessage_3m(amount) => {
+            Action::FTDelayedMessage3m(amount) => {
      
                 actors.delayed_message_3m(amount).await;
             },
-            Action::FTDelayedMessage_5m(amount) => {
+            Action::FTDelayedMessage5m(amount) => {
      
                 actors.delayed_message_5m(amount).await;
+            },
+            Action::FTAllDelayedMessages(amount) => {
+    
+
+                actors.delayed_message_0s(amount).await; 
+                actors.delayed_message_10s(amount).await;
+                actors.delayed_message_30s(amount).await;
+                actors.delayed_message_1m(amount).await; 
+                actors.delayed_message_3m(amount).await;         
+                actors.delayed_message_5m(amount).await; 
             },
            
             };
